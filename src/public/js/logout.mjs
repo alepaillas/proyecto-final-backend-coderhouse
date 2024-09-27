@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       try {
         const response = await fetch("/api/session/logout", {
-          method: "GET",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
