@@ -1,2 +1,11 @@
-# proyecto-final-backend-coderhouse
-Proyecto Final.
+# Proyecto Final Backend Coderhouse
+
+Proyecto final.
+
+## Install
+
+`npm install`
+
+## Start
+
+`npm run start`
