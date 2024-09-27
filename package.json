@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./src/app.mjs",
-    "dev": "concurrently \"nodemon ./src/app.mjs\" \"tailwindcss -i ./src/public/css/input.css -o ./src/public/css/output.css --watch\""
+    "dev": "concurrently \"nodemon ./src/app.mjs\" \"tailwindcss -i ./src/public/css/input.css -o ./src/public/css/output.css --watch\"",
+    "build": "tailwindcss -i ./src/public/css/input.css -o ./src/public/css/output.css"
   },
   "repository": {
     "type": "git",
