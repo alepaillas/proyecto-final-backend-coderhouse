@@ -9,9 +9,10 @@ import { generateToken, verifyToken } from "../utils/jwt.mjs";
 const JWT_PRIVATE_KEY = envConfig.JWT_PRIVATE_KEY;
 
 const getAll = async () => {
-  const users = await usersRepository.getAll();
-  if (!users || users.length === 0)
+  const usersData = await usersRepository.getAll();
+  if (!usersData || usersData.length === 0)
     throw customErrors.notFoundError("No users found.");
+  const users = usersData.docs.map((user) => userResponseDto(user));
   return users;
 };
 
