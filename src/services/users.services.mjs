@@ -5,6 +5,7 @@ import { generateUsersMocks } from "../mocks/user.mock.mjs"; // Import the funct
 import { createHash, isValidPassword } from "../utils/bcrypt.mjs";
 import envConfig from "../config/env.config.mjs";
 import { generateToken, verifyToken } from "../utils/jwt.mjs";
+import { sendMail } from "../utils/sendMail.mjs";
 
 const JWT_PRIVATE_KEY = envConfig.JWT_PRIVATE_KEY;
 
@@ -142,15 +143,9 @@ const updateLastConnection = async ({ uid, email } = {}) => {
   return updatedUser;
 };
 
-// const deleteInactiveUsers = async () => {
-//   const twoDaysAgo = new Date(new Date().getTime() - 2 * 24 * 60 * 60 * 1000); // 2 days ago in milliseconds
-//   const filter = { last_connection: { $lt: twoDaysAgo } };
-//   const result = await usersRepository.deleteMany(filter);
-//   return result;
-// };
-
 const deleteInactiveUsers = async () => {
   const twoDaysAgo = new Date(new Date().getTime() - 2 * 24 * 60 * 60 * 1000); // 2 days ago in milliseconds
+  //const twoDaysAgo = new Date(new Date().getTime() - 10 * 60 * 1000); // 10 min ago in milliseconds
   const filter = {
     $or: [
       { last_connection: { $lt: twoDaysAgo } },
@@ -158,6 +153,19 @@ const deleteInactiveUsers = async () => {
     ],
   };
 
+  const usersToDelete = await usersRepository.findMany(filter);
+
+  // Send email to each user to be deleted
+  for (const user of usersToDelete) {
+    await sendMail(
+      user.email,
+      "Account Deletion Notice",
+      "Your account will be deleted due to inactivity.",
+      "<p>Your account will be deleted due to inactivity.</p>",
+    );
+  }
+
+  // Delete the users
   const result = await usersRepository.deleteMany(filter);
   return result;
 };

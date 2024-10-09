@@ -48,6 +48,11 @@ const deleteMany = async (filter) => {
   return { deletedCount: result.deletedCount, userIds };
 };
 
+const findMany = async (filter) => {
+  const users = await userModel.find(filter);
+  return users;
+};
+
 export default {
   getAll,
   getById,
@@ -56,4 +61,5 @@ export default {
   update,
   deleteOne,
   deleteMany,
+  findMany,
 };
