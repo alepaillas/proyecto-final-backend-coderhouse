@@ -1,11 +1,11 @@
 meta {
-  name: POST-change-user-role
+  name: GET-userByID
   type: http
-  seq: 4
+  seq: 2
 }
 
-post {
-  url: http://localhost:8080/api/users/premium/:uid
+get {
+  url: http://localhost:8080/api/users/:uid
   body: none
   auth: none
 }

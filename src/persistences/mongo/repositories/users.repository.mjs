@@ -5,8 +5,8 @@ const getAll = async (query, options) => {
   return users;
 };
 
-const getById = async (id) => {
-  const user = await userModel.findById(id);
+const getByID = async (uid) => {
+  const user = await userModel.findById(uid);
   return user;
 };
 
@@ -55,7 +55,7 @@ const findMany = async (filter) => {
 
 export default {
   getAll,
-  getById,
+  getByID,
   getByEmail,
   create,
   update,

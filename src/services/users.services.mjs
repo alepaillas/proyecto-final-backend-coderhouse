@@ -19,6 +19,14 @@ const getAll = async () => {
   return users;
 };
 
+const getByID = async (uid) => {
+  const userData = await usersRepository.getByID(uid);
+  if (!userData) {
+    throw customErrors.notFoundError("User not found");
+  }
+  return userResponseDto(userData);
+};
+
 const getByEmail = async (email) => {
   const userData = await usersRepository.getByEmail(email);
   if (!userData) {
@@ -172,6 +180,7 @@ const deleteInactiveUsers = async () => {
 
 export default {
   getAll,
+  getByID,
   getByEmail,
   createUser,
   createMockUsers,

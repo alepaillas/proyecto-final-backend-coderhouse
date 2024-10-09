@@ -10,6 +10,26 @@ const getAll = async (req, res, next) => {
   }
 };
 
+const getByID = async (req, res, next) => {
+  try {
+    const { uid } = req.params;
+    const user = await usersServices.getByID(uid);
+    res.status(200).json({ status: "success", payload: user });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getByEmail = async (req, res, next) => {
+  try {
+    const { email } = req.params;
+    const user = await usersServices.getByEmail(email);
+    res.status(200).json({ status: "success", payload: user });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const createMockUsers = async (req, res, next) => {
   try {
     const { amount } = req.query; // Get the amount from query parameters
@@ -85,6 +105,8 @@ const deleteInactiveUsers = async (req, res, next) => {
 
 export default {
   getAll,
+  getByID,
+  getByEmail,
   createMockUsers,
   generatePasswordResetToken,
   updatePassword,

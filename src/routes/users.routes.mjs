@@ -15,6 +15,13 @@ router.get(
   usersControllers.getAll,
 );
 
+router.get(
+  "/:uid",
+  passportCall("jwt"),
+  authorization("admin"),
+  usersControllers.getByID,
+);
+
 router.post("/premium/:uid", usersControllers.changeUserRole);
 
 router.post(
