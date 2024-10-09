@@ -1,0 +1,11 @@
+meta {
+  name: DELETE-inactive-users
+  type: http
+  seq: 4
+}
+
+delete {
+  url: http://localhost:8080/api/users
+  body: none
+  auth: none
+}
