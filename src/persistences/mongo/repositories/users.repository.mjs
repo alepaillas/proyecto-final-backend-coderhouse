@@ -34,6 +34,20 @@ const deleteOne = async (id) => {
   return true;
 };
 
+const deleteMany = async (filter) => {
+  // Find the users that match the filter criteria
+  const usersToDelete = await userModel.find(filter);
+
+  // Extract the IDs of the users to be deleted
+  const userIds = usersToDelete.map((user) => user._id);
+
+  // Delete the users using their IDs
+  const result = await userModel.deleteMany({ _id: { $in: userIds } });
+
+  // Return the IDs of the deleted users
+  return { deletedCount: result.deletedCount, userIds };
+};
+
 export default {
   getAll,
   getById,
@@ -41,4 +55,5 @@ export default {
   create,
   update,
   deleteOne,
+  deleteMany,
 };

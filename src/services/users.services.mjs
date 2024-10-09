@@ -8,6 +8,8 @@ import { generateToken, verifyToken } from "../utils/jwt.mjs";
 
 const JWT_PRIVATE_KEY = envConfig.JWT_PRIVATE_KEY;
 
+const getCurrentTime = () => new Date().toUTCString();
+
 const getAll = async () => {
   const usersData = await usersRepository.getAll();
   if (!usersData || usersData.length === 0)
@@ -48,6 +50,7 @@ const createMockUsers = async (amount) => {
         email,
         age,
         password: createHash(password), // Save the password hashed
+        last_connection: getCurrentTime(),
       };
       await usersRepository.create(newUser);
       createdUsers.push({ ...user, password }); // Add plain text password for response
@@ -118,7 +121,6 @@ const addDocuments = async (uid, reqFiles) => {
   return user;
 };
 
-const getCurrentTime = () => new Date().toUTCString();
 const updateLastConnection = async ({ uid, email } = {}) => {
   let userId = uid;
 
@@ -140,6 +142,26 @@ const updateLastConnection = async ({ uid, email } = {}) => {
   return updatedUser;
 };
 
+// const deleteInactiveUsers = async () => {
+//   const twoDaysAgo = new Date(new Date().getTime() - 2 * 24 * 60 * 60 * 1000); // 2 days ago in milliseconds
+//   const filter = { last_connection: { $lt: twoDaysAgo } };
+//   const result = await usersRepository.deleteMany(filter);
+//   return result;
+// };
+
+const deleteInactiveUsers = async () => {
+  const twoDaysAgo = new Date(new Date().getTime() - 2 * 24 * 60 * 60 * 1000); // 2 days ago in milliseconds
+  const filter = {
+    $or: [
+      { last_connection: { $lt: twoDaysAgo } },
+      { last_connection: { $exists: false } },
+    ],
+  };
+
+  const result = await usersRepository.deleteMany(filter);
+  return result;
+};
+
 export default {
   getAll,
   getByEmail,
@@ -151,4 +173,5 @@ export default {
   changeUserRole,
   addDocuments,
   updateLastConnection,
+  deleteInactiveUsers,
 };

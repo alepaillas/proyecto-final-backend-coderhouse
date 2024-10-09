@@ -29,4 +29,11 @@ router.post(
   usersControllers.addDocuments,
 );
 
+router.delete(
+  "/",
+  passportCall("jwt"),
+  authorization("admin"),
+  usersControllers.deleteInactiveUsers,
+);
+
 export default router;

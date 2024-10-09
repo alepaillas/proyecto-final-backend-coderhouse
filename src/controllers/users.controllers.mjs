@@ -73,6 +73,16 @@ const addDocuments = async (req, res, next) => {
   }
 };
 
+const deleteInactiveUsers = async (req, res, next) => {
+  try {
+    const response = await usersServices.deleteInactiveUsers();
+    res.status(200).json({ status: "ok", response });
+  } catch (error) {
+    error.path = "[DELETE] /api/users/";
+    next(error);
+  }
+};
+
 export default {
   getAll,
   createMockUsers,
@@ -80,4 +90,5 @@ export default {
   updatePassword,
   changeUserRole,
   addDocuments,
+  deleteInactiveUsers,
 };
