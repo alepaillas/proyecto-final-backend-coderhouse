@@ -43,4 +43,11 @@ router.delete(
   usersControllers.deleteInactiveUsers,
 );
 
+router.delete(
+  "/:uid",
+  passportCall("jwt"),
+  authorization("admin"),
+  usersControllers.deleteByID,
+);
+
 export default router;

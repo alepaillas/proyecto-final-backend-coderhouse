@@ -178,6 +178,15 @@ const deleteInactiveUsers = async () => {
   return result;
 };
 
+const deleteByID = async (uid) => {
+  const userData = await usersRepository.getByID(uid);
+  if (!userData) {
+    throw customErrors.notFoundError("User not found");
+  }
+  const result = await usersRepository.deleteOne(uid);
+  return result;
+};
+
 export default {
   getAll,
   getByID,
@@ -191,4 +200,5 @@ export default {
   addDocuments,
   updateLastConnection,
   deleteInactiveUsers,
+  deleteByID,
 };
