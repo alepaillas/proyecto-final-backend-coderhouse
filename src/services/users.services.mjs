@@ -11,12 +11,29 @@ const JWT_PRIVATE_KEY = envConfig.JWT_PRIVATE_KEY;
 
 const getCurrentTime = () => new Date().toUTCString();
 
-const getAll = async () => {
-  const usersData = await usersRepository.getAll();
-  if (!usersData || usersData.length === 0)
+const getAll = async (query, options) => {
+  const usersData = await usersRepository.getAll(query, options);
+
+  if (!usersData || usersData.docs.length === 0) {
     throw customErrors.notFoundError("No users found.");
+  }
+
+  // Map each user to the DTO structure
   const users = usersData.docs.map((user) => userResponseDto(user));
-  return users;
+
+  // Return the paginated result with the transformed user data
+  return {
+    users,
+    totalDocs: usersData.totalDocs,
+    limit: usersData.limit,
+    totalPages: usersData.totalPages,
+    page: usersData.page,
+    pagingCounter: usersData.pagingCounter,
+    hasPrevPage: usersData.hasPrevPage,
+    hasNextPage: usersData.hasNextPage,
+    prevPage: usersData.prevPage,
+    nextPage: usersData.nextPage,
+  };
 };
 
 const getByID = async (uid) => {
@@ -104,7 +121,7 @@ const updatePassword = async (email, newPassword) => {
 };
 
 const changeUserRole = async (uid) => {
-  const user = await usersRepository.getById(uid);
+  const user = await usersRepository.getByID(uid);
   if (!user) throw customErrors.notFoundError("User not found");
 
   if (user.role === "user" && user.documents.length < 3) {

@@ -1,0 +1,23 @@
+meta {
+  name: POST-products
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8080/api/products
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "producto prueba 13",
+    "description": "Este es un producto prueba",
+    "thumbnail": [],
+    "product_code": "abc1234567890123",
+    "stock": -336,
+    "price": 7500,
+    "category": "micategoria"
+  }
+}

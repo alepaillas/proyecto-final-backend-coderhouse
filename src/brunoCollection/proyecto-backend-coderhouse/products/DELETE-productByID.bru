@@ -1,0 +1,15 @@
+meta {
+  name: DELETE-productByID
+  type: http
+  seq: 4
+}
+
+delete {
+  url: http://localhost:8080/api/products/:uid
+  body: none
+  auth: none
+}
+
+params:path {
+  uid: 6707408ad198bb299da2cbca
+}

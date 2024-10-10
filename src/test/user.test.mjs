@@ -44,7 +44,7 @@ describe("Test User Repository", function () {
   });
 
   it("Obtener un usuario por id", async () => {
-    const user = await userRepository.getById(userId);
+    const user = await userRepository.getByID(userId);
     // console.log(user);
     expect(user).to.be.an("object");
   });
@@ -68,7 +68,7 @@ describe("Test User Repository", function () {
 
   it("Eliminar un usuario por id", async () => {
     await userRepository.deleteOne(userId);
-    const user = await userRepository.getById(userId);
+    const user = await userRepository.getByID(userId);
     expect(user).to.be.null;
   });
 

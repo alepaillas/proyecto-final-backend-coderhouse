@@ -5,7 +5,13 @@ meta {
 }
 
 get {
-  url: http://localhost:8080/api/users
+  url: http://localhost:8080/api/users?page=1&sort=asc&limit=3
   body: none
   auth: none
+}
+
+params:query {
+  page: 1
+  sort: asc
+  limit: 3
 }

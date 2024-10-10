@@ -3,8 +3,33 @@ import usersServices from "../services/users.services.mjs";
 
 const getAll = async (req, res, next) => {
   try {
-    const users = await usersServices.getAll();
-    res.status(200).json({ status: "success", payload: users });
+    const { limit, page, sort } = req.query;
+    const options = {
+      limit: parseInt(limit, 10) || 10,
+      page: parseInt(page, 10) || 1,
+      sort: {
+        first_name: sort === "asc" ? 1 : -1,
+      },
+      lean: true,
+    };
+
+    if (
+      isNaN(options.page) ||
+      options.page < 1 ||
+      options.page > Number.MAX_SAFE_INTEGER / options.limit
+    ) {
+      throw customErrors.badRequestError(
+        "La página buscada debe ser un número entero positivo dentro de un rango válido.",
+      );
+    }
+
+    const users = await usersServices.getAll({}, options);
+
+    if (users.totalPages < options.page || options.page <= 0) {
+      throw customErrors.badRequestError("Página fuera de rango.");
+    }
+
+    res.status(200).json({ status: "success", users });
   } catch (error) {
     next(error);
   }
