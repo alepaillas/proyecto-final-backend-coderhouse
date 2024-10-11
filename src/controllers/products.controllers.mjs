@@ -78,8 +78,8 @@ const create = async (req, res, next) => {
 const deleteOne = async (req, res, next) => {
   try {
     const { id } = req.params;
-    await productsServices.deleteOne(id, req.user);
-    res.status(200).json({ status: "success" });
+    const response = await productsServices.deleteOne(id, req.user);
+    res.status(200).json({ status: "success", payload: response.message });
   } catch (error) {
     next(error);
   }

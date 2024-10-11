@@ -5,7 +5,11 @@ meta {
 }
 
 get {
-  url: http://localhost:8080/api/products
+  url: http://localhost:8080/api/products/:uid
   body: none
   auth: none
+}
+
+params:path {
+  uid: 66529d404a3bd7f401470194
 }

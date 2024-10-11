@@ -2,6 +2,8 @@ import productsRepository from "../persistences/mongo/repositories/products.repo
 import { productResponseDto } from "../dto/productResponse.dto.mjs";
 import customErrors from "../errors/customErrors.mjs";
 import { generateProductsMocks } from "../mocks/product.mock.mjs";
+import usersRepository from "../persistences/mongo/repositories/users.repository.mjs";
+import { sendMail } from "../utils/sendMail.mjs";
 
 const getAll = async (query, options) => {
   const products = await productsRepository.getAll(query, options);
@@ -59,8 +61,28 @@ const deleteOne = async (id, user) => {
     throw customErrors.unauthorizedError("User not authorized");
   }
   const deleted = await productsRepository.deleteOne(id);
-  if (!deleted)
+  if (!deleted) {
     throw customErrors.notFoundError(`Product with id: ${id} not found.`);
+  } else if (productData.owner !== "admin") {
+    const owner = await usersRepository.getByID(productData.owner);
+    if (!owner) {
+      throw customErrors.notFoundError("Product owner not found");
+    } else {
+      await sendMail(
+        owner.email,
+        "Your product was deleted by an administrator",
+        `Dear user, your product ${productData.title} was deleted by an administrator. If you think this wa a mistake please get in contact by replying to this email.`,
+        `<p>
+          Dear user, your product <strong>${productData.title}</strong> was deleted by an
+          administrator.
+         </p>
+         <p>
+          If you think this wa a mistake please get in contact by
+          replying to this email.
+         </p>`,
+      );
+    }
+  }
   return { message: `Product with id: ${id} successfully deleted.` };
 };
 
