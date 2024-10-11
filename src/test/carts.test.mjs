@@ -7,7 +7,7 @@ import productsRepository from "../persistences/mongo/repositories/products.repo
 
 const requester = supertest(`${envConfig.BASE_URL}:${envConfig.PORT}`);
 
-describe("Test de productos", async function () {
+describe("Test de Carts", async function () {
   this.timeout(5000); // mocha tiene un timeout de 2s por defecto que no alcanza para MongoDb
 
   let cookie;

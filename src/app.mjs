@@ -14,7 +14,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import envConfig from "./config/env.config.mjs";
 import { errorHandler } from "./errors/errorHandler.mjs";
-import swaggerUIExpress from "swagger-ui-express"
+import swaggerUIExpress from "swagger-ui-express";
 import { specs } from "./config/swagger.config.mjs";
 
 // Definimos el puerto en el que se ejecutará el servidor, utilizando el puerto definido en las variables de entorno si está disponible, de lo contrario, utilizamos el puerto 8080 por defecto

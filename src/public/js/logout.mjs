@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const logoutButton = document.getElementById("logoutButton");
+  const logoutButtons = document.querySelectorAll("#logoutButton");
 
-  if (logoutButton) {
-    logoutButton.addEventListener("click", async function (event) {
+  logoutButtons.forEach((button) => {
+    button.addEventListener("click", async function (event) {
       event.preventDefault(); // Evita el comportamiento predeterminado del enlace
 
       try {
@@ -27,5 +27,5 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("Error al cerrar sesión. Inténtalo de nuevo más tarde.");
       }
     });
-  }
+  });
 });
